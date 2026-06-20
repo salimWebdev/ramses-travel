@@ -181,7 +181,7 @@ tr:hover td { background: #f8fafc; }
 </div>
 
 <script>
-const API = 'http://localhost:3001/api';
+cconst API = window.location.origin + '/api';
 let token = localStorage.getItem('token') || '';
 let editingId = null;
 let currentTab = 'destinations';
