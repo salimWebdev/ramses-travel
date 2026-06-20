@@ -1,0 +1,42 @@
+[
+  {
+    "id": "g-1",
+    "name": "Kamel Ketem",
+    "rating": 5,
+    "text": "Sincèrement, dès le 1er contact avec la dame de l'agence, j'ai été mis à l'aise par la correction, la gentillesse, la grâce, le professionnalisme de l'agence. Je suis sûr que je ferai un bon voyage avec eux à Sousse le 4/12. Au retour, je suis certain de confirmer tout le bien que je pense de cette agence... Merci Ramsès voyages et continuez à nous faire rêver.",
+    "source": "google",
+    "date": "2025-09-15T00:00:00.000Z"
+  },
+  {
+    "id": "g-2",
+    "name": "Selena Cici",
+    "rating": 5,
+    "text": "Très belle expérience avec cette agence. On a passé un excellent séjour en Tunisie, l'hôtel qu'ils nous ont proposé était magnifique, le transport s'est fait dans un bus très confortable avec une bonne assistance. Merci à toute l'équipe.",
+    "source": "google",
+    "date": "2025-10-10T00:00:00.000Z"
+  },
+  {
+    "id": "g-3",
+    "name": "Damia Cheblal",
+    "rating": 5,
+    "text": "Un big merci à vous, notre séjour a été magnifique, l'hôtel marabout. Vraiment professionnel et sérieux. On reviendra c'est sûr avec vous Ramses.",
+    "source": "google",
+    "date": "2025-11-15T00:00:00.000Z"
+  },
+  {
+    "id": "g-4",
+    "name": "Yacine Enimi",
+    "rating": 5,
+    "text": "Toujours à la hauteur Ramses, hate de repartir avec vous pour mon 4ème voyage avec Ramses le 11 juin, une agence vraiment sérieuse et à l'écoute.",
+    "source": "google",
+    "date": "2025-11-15T00:00:00.000Z"
+  },
+  {
+    "id": "g-5",
+    "name": "Assia Si",
+    "rating": 5,
+    "text": "Bravo à l'équipe Ramsès, nous venons tout juste de rentrer, nous sommes encore sur notre petit nuage. Un cadre familial, une super ambiance dans le bus, et un groupe vraiment exceptionnel, que des familles adorables avec qui on a partagé des moments inoubliables. Merci pour cette organisation au top, vivement le prochain voyage avec vous.",
+    "source": "google",
+    "date": "2025-10-10T00:00:00.000Z"
+  }
+]

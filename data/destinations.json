@@ -1,0 +1,159 @@
+[
+  {
+    "id": "dest-sousse",
+    "name_fr": "Sousse, Tunisie",
+    "name_ar": "سوسة، تونس",
+    "name_en": "Sousse, Tunisia",
+    "tag_fr": "Promo été",
+    "tag_ar": "عرض الصيف",
+    "tag_en": "Summer promo",
+    "mapQuery": "Sousse+Tunisia",
+    "image": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&q=80",
+    "gallery": [
+      "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&q=80",
+      "https://images.unsplash.com/photo-1551632811-561732d1e306?w=800&q=80",
+      "https://images.unsplash.com/photo-1583422409513-2895a4ef5cf4?w=800&q=80"
+    ],
+    "rating": 4.7,
+    "reviews": 128,
+    "duration": "7 Jours / 6 Nuits",
+    "price": "31 990 DA",
+    "dates": [
+      "2026-07-01",
+      "2026-07-15",
+      "2026-08-01",
+      "2026-08-15"
+    ],
+    "desc_fr": "Découvrez les plages paradisiaques de Sousse, perle de la Méditerranée. Profitez du soleil, de la mer turquoise et du sable fin lors de ce séjour tout inclus. La médina de Sousse, classée au patrimoine mondial de l'UNESCO, vous émerveillera par ses ruelles authentiques et son riche patrimoine historique.",
+    "desc_ar": "اكتشف شواطئ سوسة الجنة، لؤلؤة البحر الأبيض المتوسط. استمتع بالشمس والبحر الفيروزي والرمال الناعمة خلال هذه الإقامة الشاملة. المدينة القديمة في سوسة، المدرجة في قائمة اليونسكو للتراث العالمي، ستبهرك بأزقتها الأصيلة وتراثها التاريخي الغني.",
+    "desc_en": "Discover the paradisiacal beaches of Sousse, pearl of the Mediterranean. Enjoy the sun, turquoise sea and fine sand during this all-inclusive stay. The medina of Sousse, a UNESCO World Heritage site, will amaze you with its authentic alleys and rich historical heritage.",
+    "includes_fr": [
+      "Vol aller-retour",
+      "Séjour 7 jours / 6 nuits en hôtel 4★",
+      "Demi-pension (Petit-déjeuner + Dîner)",
+      "Transport aller-retour en bus confortable",
+      "Accompagnement & assistance durant le séjour"
+    ],
+    "includes_ar": [
+      "رحلة ذهاب وعودة",
+      "إقامة 7 أيام / 6 ليالٍ في فندق 4 نجوم",
+      "نصف إقامة (فطور + عشاء)",
+      "نقل ذهاب وعودة بحافلة مريحة",
+      "مرافقة ومساعدة خلال الإقامة"
+    ],
+    "includes_en": [
+      "Round trip flight",
+      "7 days / 6 nights in 4★ hotel",
+      "Half board (Breakfast + Dinner)",
+      "Round trip by comfortable bus",
+      "Guidance & assistance during stay"
+    ],
+    "recommendations": [
+      {
+        "name_fr": "Plage de Sousse",
+        "name_ar": "شاطئ سوسة",
+        "name_en": "Sousse Beach",
+        "rating": 4.6,
+        "text_fr": "Plage de sable fin, eau claire, idéale pour les familles",
+        "text_ar": "شاطئ رملي ناعم، مياه صافية، مثالي للعائلات",
+        "text_en": "Fine sand beach, clear water, ideal for families"
+      },
+      {
+        "name_fr": "Médina de Sousse",
+        "name_ar": "مدينة سوسة القديمة",
+        "name_en": "Medina of Sousse",
+        "rating": 4.7,
+        "text_fr": "Classée UNESCO, souks authentiques et architecture historique",
+        "text_ar": "مدرجة في اليونسكو، أسواق أصلية وهندسة معمارية تاريخية",
+        "text_en": "UNESCO listed, authentic souks and historical architecture"
+      },
+      {
+        "name_fr": "Port El Kantaoui",
+        "name_ar": "ميناء القنطاوي",
+        "name_en": "Port El Kantaoui",
+        "rating": 4.5,
+        "text_fr": "Station balnéaire moderne avec marina, golf et restaurants",
+        "text_ar": "منتجع عصري مع مرسى وملعب غولف ومطاعم",
+        "text_en": "Modern resort with marina, golf and restaurants"
+      }
+    ]
+  },
+  {
+    "id": "dest-istanbul",
+    "name_fr": "Istanbul, Turquie",
+    "name_ar": "إسطنبول، تركيا",
+    "name_en": "Istanbul, Turkey",
+    "tag_fr": "Nouveau",
+    "tag_ar": "جديد",
+    "tag_en": "New",
+    "mapQuery": "Istanbul+Turkey",
+    "image": "https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?w=800&q=80",
+    "gallery": [
+      "https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?w=800&q=80",
+      "https://images.unsplash.com/photo-1586568395350-3c18c28edc65?w=800&q=80",
+      "https://images.unsplash.com/photo-1541432901042-2d8bd64b4a9b?w=800&q=80"
+    ],
+    "rating": 4.7,
+    "reviews": 95,
+    "duration": "8 Jours / 7 Nuits",
+    "price": "133 000 DA",
+    "dates": [
+      "2026-07-10",
+      "2026-08-05",
+      "2026-09-01"
+    ],
+    "desc_fr": "Istanbul, ville aux deux continents, vous invite à un voyage exceptionnel entre Orient et Occident. Explorez ses palais majestueux, ses mosquées historiques et son célèbre Grand Bazar. Cette métropole vibrante vous séduira par son ambiance unique, sa gastronomie raffinée et l'hospitalité légendaire de ses habitants.",
+    "desc_ar": "إسطنبول، مدينة القارتين، تدعوكم لرحلة استثنائية بين الشرق والغرب. استكشفوا قصورها المهيبة ومساجدها التاريخية وبازارها الكبير الشهير. هذه المدينة النابضة بالحياة ستأسركم بأجوائها الفريدة ومطبخها الراقي وكرم ضيافة سكانها الأسطوري.",
+    "desc_en": "Istanbul, city on two continents, invites you on an exceptional journey between East and West. Explore its majestic palaces, historical mosques and famous Grand Bazaar. This vibrant metropolis will captivate you with its unique atmosphere, refined gastronomy and legendary hospitality.",
+    "includes_fr": [
+      "Vol aller-retour Alger – Istanbul (Turkish Airlines)",
+      "Hébergement 8 jours / 7 nuits en hôtel 4★",
+      "Petit-déjeuner inclus durant tout le séjour",
+      "19 excursions organisées",
+      "Guide francophone accompagnateur"
+    ],
+    "includes_ar": [
+      "رحلة ذهاب وعودة الجزائر – إسطنبول (الخطوط التركية)",
+      "إقامة 8 أيام / 7 ليالٍ في فندق 4 نجوم",
+      "فطور مشمول طوال الإقامة",
+      "19 رحلة منظمة",
+      "مرشد ناطق بالفرنسية"
+    ],
+    "includes_en": [
+      "Round trip Algiers – Istanbul (Turkish Airlines)",
+      "8 days / 7 nights in 4★ hotel",
+      "Breakfast included",
+      "19 organized excursions",
+      "French-speaking guide"
+    ],
+    "recommendations": [
+      {
+        "name_fr": "Sainte-Sophie",
+        "name_ar": "آيا صوفيا",
+        "name_en": "Hagia Sophia",
+        "rating": 4.8,
+        "text_fr": "Chef-d'œuvre architectural, musée puis mosquée, incontournable",
+        "text_ar": "تحفة معمارية، متحف ثم مسجد، لا يُفوّت",
+        "text_en": "Architectural masterpiece, museum then mosque, unmissable"
+      },
+      {
+        "name_fr": "Mosquée Bleue",
+        "name_ar": "المسجد الأزرق",
+        "name_en": "Blue Mosque",
+        "rating": 4.7,
+        "text_fr": "Magnifique mosquée aux 6 minarets et céramiques d'Iznik",
+        "text_ar": "مسجد رائع ذو 6 مآذن وخزف إزنيق",
+        "text_en": "Magnificent mosque with 6 minarets and Iznik tiles"
+      },
+      {
+        "name_fr": "Grand Bazar",
+        "name_ar": "البازار الكبير",
+        "name_en": "Grand Bazaar",
+        "rating": 4.5,
+        "text_fr": "Plus grand marché couvert au monde, 4000 boutiques",
+        "text_ar": "أكبر سوق مغطى في العالم، 4000 متجر",
+        "text_en": "Largest covered market in the world, 4000 shops"
+      }
+    ]
+  }
+]

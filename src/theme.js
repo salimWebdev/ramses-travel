@@ -1,0 +1,16 @@
+export const colors = {
+  primary: '#4A90D9',
+  primaryDark: '#2C5F8A',
+  primaryDarker: '#1A3D5C',
+  primaryLight: '#E8F0FE',
+  gold: '#C9A84C',
+  goldDark: '#A88A2E',
+  goldLight: '#F5ECD7',
+  white: '#FFFFFF',
+  offWhite: '#F4F8FC',
+  gray: '#6B7280',
+  grayLight: '#E5E7EB',
+  text: '#333333',
+  textLight: '#555555',
+  whatsapp: '#25D366',
+};

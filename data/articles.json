@@ -1,0 +1,38 @@
+[
+  {
+    "id": "a1",
+    "title_fr": "Découvrez Sousse : la perle de la Tunisie",
+    "title_ar": "اكتشف سوسة: لؤلؤة تونس",
+    "title_en": "Discover Sousse: The Pearl of Tunisia",
+    "excerpt_fr": "Sousse vous attend avec ses plages dorées, sa médina classée UNESCO et son ambiance chaleureuse. Un séjour inoubliable à partir de 29 990 DA.",
+    "excerpt_ar": "سوسة تنتظركم بشواطئها الذهبية ومدينتها القديمة المصنفة ضمن اليونسكو وأجوائها الدافئة",
+    "excerpt_en": "Sousse awaits you with its golden beaches, UNESCO-listed medina and warm atmosphere.",
+    "image": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&q=80",
+    "date": "2026-04-15",
+    "category": "destinations"
+  },
+  {
+    "id": "a2",
+    "title_fr": "Istanbul : entre Orient et Occident",
+    "title_ar": "إسطنبول: بين الشرق والغرب",
+    "title_en": "Istanbul: Between East and West",
+    "excerpt_fr": "Vivez une expérience unique à Istanbul avec nos voyages organisés. Croisière sur le Bosphore, visites des palais, souks authentiques et bien plus.",
+    "excerpt_ar": "عيش تجربة فريدة في إسطنبول مع رحلاتنا المنظمة",
+    "excerpt_en": "Live a unique experience in Istanbul with our organized trips.",
+    "image": "https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?w=800&q=80",
+    "date": "2026-04-10",
+    "category": "destinations"
+  },
+  {
+    "id": "a3",
+    "title_fr": "Comment préparer votre Visa voyage ?",
+    "title_ar": "كيف تحضر تأشيرة سفرك؟",
+    "title_en": "How to prepare your travel visa?",
+    "excerpt_fr": "Notre équipe vous accompagne dans toutes vos démarches de visa. Conseils, documents requis et délais à respecter pour un voyage sans stress.",
+    "excerpt_ar": "فريقنا يرافقكم في جميع إجراءات التأشيرة",
+    "excerpt_en": "Our team supports you in all your visa procedures.",
+    "image": "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=800&q=80",
+    "date": "2026-03-28",
+    "category": "conseils"
+  }
+]

@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ramses Travel - Administration</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Inter', sans-serif; background: #f0f4f8; color: #1a3d5c; min-height: 100vh; }
+:root { --primary: #4A90D9; --primary-dark: #1a3d5c; --gold: #C9A84C; --gold-dark: #b8942e; --gold-light: #f5edce; }
+.login-screen { display: flex; align-items: center; justify-content: center; min-height: 100vh; background: linear-gradient(135deg, #1a3d5c, #4A90D9); }
+.login-box { background: #fff; border-radius: 20px; padding: 50px 40px; width: 400px; max-width: 90vw; box-shadow: 0 20px 60px rgba(0,0,0,0.2); text-align: center; }
+.login-box h1 { color: var(--primary-dark); margin-bottom: 8px; font-size: 1.8rem; }
+.login-box p { color: #888; margin-bottom: 30px; font-size: 0.9rem; }
+.login-box input { width: 100%; padding: 14px 18px; border: 2px solid #e0e7ef; border-radius: 12px; font-size: 1rem; font-family: inherit; transition: 0.2s; margin-bottom: 20px; }
+.login-box input:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 0 3px rgba(201,168,76,0.15); }
+.login-box button { width: 100%; padding: 14px; background: var(--gold); border: none; border-radius: 12px; font-size: 1rem; font-weight: 700; color: var(--primary-dark); cursor: pointer; transition: 0.2s; }
+.login-box button:hover { background: var(--gold-dark); transform: translateY(-1px); }
+.login-error { color: #e74c3c; font-size: 0.85rem; margin-bottom: 15px; display: none; }
+.app { display: none; }
+.app.visible { display: flex; min-height: 100vh; }
+.sidebar { width: 240px; background: var(--primary-dark); color: #fff; padding: 0; flex-shrink: 0; }
+.sidebar-brand { padding: 24px 20px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+.sidebar-brand h2 { font-size: 1.2rem; color: var(--gold); letter-spacing: 1px; }
+.sidebar-brand small { font-size: 0.7rem; opacity: 0.6; }
+.sidebar-nav { padding: 10px 0; }
+.sidebar-nav a { display: block; padding: 12px 20px; color: rgba(255,255,255,0.7); text-decoration: none; font-size: 0.9rem; font-weight: 500; transition: 0.2s; cursor: pointer; border-left: 3px solid transparent; }
+.sidebar-nav a:hover, .sidebar-nav a.active { color: #fff; background: rgba(255,255,255,0.08); border-left-color: var(--gold); }
+.main { flex: 1; padding: 30px; overflow-x: hidden; }
+.main-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+.main-header h1 { font-size: 1.6rem; font-weight: 700; }
+.logout-btn { padding: 8px 20px; background: none; border: 2px solid #ddd; border-radius: 10px; cursor: pointer; font-family: inherit; font-size: 0.85rem; color: #888; transition: 0.2s; }
+.logout-btn:hover { border-color: #e74c3c; color: #e74c3c; }
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+.card { background: #fff; border-radius: 16px; box-shadow: 0 2px 15px rgba(0,0,0,0.06); overflow: hidden; }
+.card-header { padding: 20px 24px; border-bottom: 1px solid #f0f0f0; display: flex; justify-content: space-between; align-items: center; }
+.card-header h3 { font-size: 1rem; font-weight: 600; }
+.btn { padding: 10px 20px; border: none; border-radius: 10px; font-size: 0.85rem; font-weight: 600; font-family: inherit; cursor: pointer; transition: 0.2s; display: inline-flex; align-items: center; gap: 6px; }
+.btn-gold { background: var(--gold); color: var(--primary-dark); }
+.btn-gold:hover { background: var(--gold-dark); transform: translateY(-1px); }
+.btn-sm { padding: 6px 14px; font-size: 0.8rem; }
+.btn-edit { background: var(--primary); color: #fff; }
+.btn-edit:hover { background: #3a7bc8; }
+.btn-delete { background: #fee; color: #e74c3c; }
+.btn-delete:hover { background: #fdd; }
+.btn-outline { background: none; border: 2px solid #ddd; color: #666; }
+.btn-outline:hover { border-color: #bbb; }
+.table-wrap { overflow-x: auto; padding: 0; }
+table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+th, td { padding: 12px 16px; text-align: left; border-bottom: 1px solid #f5f5f5; }
+th { font-weight: 600; color: #888; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; background: #fafafa; }
+tr:hover td { background: #f8fafc; }
+.badge-dest, .badge-cont { display: inline-block; padding: 2px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 600; }
+.badge-dest { background: #e8f4fd; color: var(--primary); }
+.badge-cont { background: #fef3e2; color: var(--gold-dark); }
+.actions { display: flex; gap: 6px; }
+.empty { text-align: center; padding: 60px 20px; color: #aaa; }
+.empty p { font-size: 0.9rem; margin-top: 8px; }
+.form-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 1000; display: none; align-items: center; justify-content: center; padding: 20px; }
+.form-overlay.open { display: flex; }
+.form-modal { background: #fff; border-radius: 20px; width: 700px; max-width: 100%; max-height: 85vh; overflow-y: auto; padding: 35px; }
+.form-modal h2 { margin-bottom: 25px; font-size: 1.3rem; }
+.form-group { margin-bottom: 18px; }
+.form-group label { display: block; font-size: 0.85rem; font-weight: 600; color: #555; margin-bottom: 6px; }
+.form-group input, .form-group textarea, .form-group select { width: 100%; padding: 11px 14px; border: 2px solid #e0e7ef; border-radius: 10px; font-size: 0.9rem; font-family: inherit; transition: 0.2s; }
+.form-group input:focus, .form-group textarea:focus { outline: none; border-color: var(--gold); }
+.form-group textarea { resize: vertical; min-height: 60px; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+.form-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 25px; padding-top: 20px; border-top: 1px solid #f0f0f0; }
+.date-list { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+.date-tag { display: inline-flex; align-items: center; gap: 6px; background: #f0f4f8; padding: 4px 12px; border-radius: 8px; font-size: 0.8rem; }
+.date-tag button { background: none; border: none; cursor: pointer; color: #e74c3c; font-size: 1rem; padding: 0; line-height: 1; }
+.gallery-list { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 8px; }
+.gallery-item { position: relative; width: 100px; height: 70px; border-radius: 8px; overflow: hidden; }
+.gallery-item img { width: 100%; height: 100%; object-fit: cover; }
+.gallery-item button { position: absolute; top: 2px; right: 2px; background: rgba(0,0,0,0.5); color: #fff; border: none; border-radius: 50%; width: 20px; height: 20px; font-size: 12px; cursor: pointer; line-height: 1; }
+.rec-item { background: #f8fafc; border-radius: 10px; padding: 15px; margin-bottom: 12px; }
+.rec-item .form-row { margin-top: 8px; }
+.input-upload { display: flex; gap: 8px; align-items: stretch; }
+.input-upload input { flex: 1; }
+.input-upload .btn-upload { padding: 0 16px; background: var(--primary); color: #fff; border: none; border-radius: 10px; font-size: 0.85rem; font-weight: 600; cursor: pointer; white-space: nowrap; display: flex; align-items: center; gap: 5px; transition: 0.2s; font-family: inherit; }
+.input-upload .btn-upload:hover { background: #3a7bc8; }
+.upload-status { font-size: 0.75rem; margin-top: 4px; }
+.upload-status.ok { color: #27ae60; }
+.upload-status.err { color: #e74c3c; }
+@media (max-width: 768px) { .sidebar { width: 60px; } .sidebar-brand h2, .sidebar-brand small, .sidebar-nav a span { display: none; } .main { padding: 20px; } .form-row { grid-template-columns: 1fr; } .form-modal { padding: 20px; } }
+</style>
+</head>
+<body>
+
+<div class="login-screen" id="loginScreen">
+  <div class="login-box">
+    <h1>🔐 Ramses Travel</h1>
+    <p>Espace d'administration</p>
+    <div class="login-error" id="loginError">Mot de passe incorrect</div>
+    <input type="password" id="passwordInput" placeholder="Mot de passe" autofocus>
+    <button onclick="login()">Se connecter</button>
+  </div>
+</div>
+
+<div class="app" id="app">
+  <div class="sidebar">
+    <div class="sidebar-brand">
+      <h2>Ramses</h2>
+      <small>Administration</small>
+    </div>
+    <div class="sidebar-nav">
+      <a class="active" onclick="showTab('destinations')">🏝️ <span>Destinations</span></a>
+      <a onclick="showTab('reviews')">⭐ <span>Avis clients</span></a>
+      <a onclick="showTab('organized')">🧳 <span>D. organisées</span></a>
+      <a onclick="showTab('contacts')">✉️ <span>Messages</span></a>
+    </div>
+  </div>
+  <div class="main">
+    <div class="main-header">
+      <h1 id="pageTitle">Destinations</h1>
+      <button class="logout-btn" onclick="logout()">Déconnexion</button>
+    </div>
+
+    <div class="tab-content active" id="tabDestinations">
+      <div class="card">
+        <div class="card-header">
+          <h3>Gérer les destinations</h3>
+          <button class="btn btn-gold" onclick="openDestForm()">+ Nouvelle destination</button>
+        </div>
+        <div class="table-wrap" id="destTable"></div>
+      </div>
+    </div>
+
+    <div class="tab-content" id="tabReviews">
+      <div class="card" style="margin-bottom:20px">
+        <div class="card-header">
+          <h3>Synchroniser avec Google Maps</h3>
+        </div>
+        <div style="padding:20px 24px">
+          <div class="form-row">
+            <div class="form-group"><label>Google Place ID</label><input id="rc_placeId" placeholder="ChIJ..."></div>
+            <div class="form-group"><label>Google Maps API Key</label><input id="rc_apiKey" type="password" placeholder="AIza..."></div>
+          </div>
+          <div style="display:flex;gap:10px;align-items:center;margin-top:10px">
+            <button class="btn btn-gold" onclick="saveReviewConfig()">Enregistrer la config</button>
+            <button class="btn btn-edit" onclick="syncGoogleReviews()">Synchroniser les avis Google</button>
+            <span id="syncStatus" style="font-size:0.85rem;color:#888"></span>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <h3>Avis clients</h3>
+          <button class="btn btn-gold" onclick="openReviewForm()">+ Nouvel avis</button>
+        </div>
+        <div class="table-wrap" id="reviewTable"></div>
+      </div>
+    </div>
+
+    <div class="tab-content" id="tabOrganized">
+      <div class="card">
+        <div class="card-header">
+          <h3>Destinations déjà organisées — page Blog</h3>
+          <button class="btn btn-gold" onclick="openOrgForm()">+ Nouvelle destination</button>
+        </div>
+        <div class="table-wrap" id="orgTable"></div>
+      </div>
+    </div>
+
+    <div class="tab-content" id="tabContacts">
+      <div class="card">
+        <div class="card-header">
+          <h3>Messages reçus</h3>
+        </div>
+        <div class="table-wrap" id="contactTable"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="form-overlay" id="formOverlay">
+  <div class="form-modal" id="formContent"></div>
+</div>
+
+<script>
+const API = 'http://localhost:3001/api';
+let token = localStorage.getItem('token') || '';
+let editingId = null;
+let currentTab = 'destinations';
+
+if (token) { document.getElementById('loginScreen').style.display = 'none'; document.getElementById('app').classList.add('visible'); loadAll(); }
+
+function login() {
+  const pwd = document.getElementById('passwordInput').value;
+  fetch(API + '/login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ password: pwd }) })
+    .then(r => r.json()).then(d => {
+      if (d.token) { token = d.token; localStorage.setItem('token', token); document.getElementById('loginScreen').style.display = 'none'; document.getElementById('app').classList.add('visible'); loadAll(); }
+      else { document.getElementById('loginError').style.display = 'block'; }
+    }).catch(() => { document.getElementById('loginError').textContent = 'Erreur de connexion au serveur'; document.getElementById('loginError').style.display = 'block'; });
+}
+function logout() { token = ''; localStorage.removeItem('token'); document.getElementById('app').classList.remove('visible'); document.getElementById('loginScreen').style.display = 'flex'; }
+
+function headers() { return { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token }; }
+
+function uploadImage(inputId, targetInputId) {
+  const file = document.getElementById(inputId).files[0];
+  if (!file) return;
+  const statusEl = document.getElementById(inputId + '_status');
+  statusEl.textContent = '⏳ Upload...';
+  statusEl.className = 'upload-status';
+  const fd = new FormData();
+  fd.append('image', file);
+  fetch(API + '/upload', { method: 'POST', headers: { 'Authorization': 'Bearer ' + token }, body: fd })
+    .then(r => r.json()).then(d => {
+      if (d.url) {
+        document.getElementById(targetInputId).value = d.url;
+        statusEl.textContent = '✅ Image uploadée';
+        statusEl.className = 'upload-status ok';
+      } else {
+        statusEl.textContent = '❌ ' + (d.error || 'Erreur');
+        statusEl.className = 'upload-status err';
+      }
+    }).catch(() => {
+      statusEl.textContent = '❌ Erreur de connexion';
+      statusEl.className = 'upload-status err';
+    });
+  document.getElementById(inputId).value = '';
+}
+
+function uploadImageToGallery(inputId, galleryId) {
+  const files = document.getElementById(inputId).files;
+  if (!files.length) return;
+  const statusEl = document.getElementById(inputId + '_status');
+  statusEl.textContent = `⏳ Upload de ${files.length} image(s)...`;
+  statusEl.className = 'upload-status';
+  let done = 0, failed = 0;
+  Array.from(files).forEach(file => {
+    const fd = new FormData();
+    fd.append('image', file);
+    fetch(API + '/upload', { method: 'POST', headers: { 'Authorization': 'Bearer ' + token }, body: fd })
+      .then(r => r.json()).then(d => {
+        if (d.url) {
+          const div = document.createElement('div');
+          div.className = 'gallery-item';
+          div.innerHTML = `<img src="${d.url}"><button onclick="this.parentElement.remove()">×</button>`;
+          document.getElementById(galleryId).appendChild(div);
+          done++;
+        } else { failed++; }
+        checkDone();
+      }).catch(() => { failed++; checkDone(); });
+  });
+  function checkDone() {
+    if (done + failed === files.length) {
+      document.getElementById(inputId).value = '';
+      statusEl.textContent = `✅ ${done} ajoutée(s)` + (failed ? ` (${failed} échec)` : '');
+      statusEl.className = 'upload-status ok';
+      setTimeout(() => statusEl.textContent = '', 3000);
+    }
+  }
+}
+
+function makeUploadHtml(inputId, targetInputId, galleryMode, galleryId) {
+  const uid = inputId + '_file';
+  const action = galleryMode
+    ? `uploadImageToGallery('${uid}','${galleryId}')`
+    : `uploadImage('${uid}','${targetInputId}')`;
+  return `<div class="input-upload">
+    <input type="file" id="${uid}" accept="image/*" multiple style="display:none" onchange="${action}">
+    <button class="btn-upload" onclick="document.getElementById('${uid}').click()">📁 Choisir des fichiers</button>
+  </div>
+  <div id="${uid}_status" class="upload-status"></div>`;
+}
+
+function showTab(tab) {
+  currentTab = tab;
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.sidebar-nav a').forEach(a => a.classList.remove('active'));
+  document.getElementById('tab' + tab.charAt(0).toUpperCase() + tab.slice(1)).classList.add('active');
+  document.querySelector(`.sidebar-nav a[onclick*="${tab}"]`).classList.add('active');
+  document.getElementById('pageTitle').textContent = tab === 'destinations' ? 'Destinations' : tab === 'reviews' ? 'Avis clients' : tab === 'organized' ? 'Destinations organisées' : 'Messages';
+}
+
+function loadAll() { loadDestinations(); loadContacts(); loadReviews(); loadReviewConfig(); loadOrganized(); }
+
+function loadDestinations() {
+  fetch(API + '/destinations').then(r => r.json()).then(data => {
+    const t = document.getElementById('destTable');
+    if (!data.length) { t.innerHTML = '<div class="empty"><p style="font-size:2rem">🏝️</p><p>Aucune destination pour le moment</p></div>'; return; }
+    t.innerHTML = `<table><thead><tr><th>Image</th><th>Nom (FR)</th><th>Dates</th><th>Prix</th><th style="width:120px">Actions</th></tr></thead><tbody>${data.map(d => `<tr><td><img src="${d.image}" style="width:50px;height:35px;object-fit:cover;border-radius:6px"></td><td><strong>${d.name_fr || ''}</strong><br><small style="color:#888">${d.name_en || ''}</small></td><td>${(d.dates||[]).map(dd => `<span class="date-tag">${dd}</span>`).join(' ')}</td><td>${d.price || ''}</td><td class="actions"><button class="btn btn-sm btn-edit" onclick="editDest('${d.id}')">Modifier</button><button class="btn btn-sm btn-delete" onclick="deleteDest('${d.id}')">Suppr.</button></td></tr>`).join('')}</tbody></table>`;
+  });
+}
+
+
+function loadContacts() {
+  fetch(API + '/contacts', { headers: headers() }).then(r => r.json()).then(data => {
+    const t = document.getElementById('contactTable');
+    if (!data.length) { t.innerHTML = '<div class="empty"><p style="font-size:2rem">✉️</p><p>Aucun message reçu</p></div>'; return; }
+    t.innerHTML = `<table><thead><tr><th>Date</th><th>Nom</th><th>Email</th><th>Téléphone</th><th>Message</th><th style="width:60px"></th></tr></thead><tbody>${data.map(c => `<tr><td><small>${new Date(c.date).toLocaleDateString('fr-FR')}</small></td><td><strong>${c.name || ''}</strong></td><td><a href="mailto:${c.email}" style="color:var(--primary);text-decoration:none">${c.email || ''}</a></td><td>${c.phone || ''}</td><td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${c.message || ''}</td><td><button class="btn btn-sm btn-delete" onclick="deleteContact('${c.id}')">✕</button></td></tr>`).join('')}</tbody></table>`;
+  });
+}
+
+function deleteDest(id) { if (confirm('Supprimer cette destination ?')) fetch(API + '/destinations/' + id, { method: 'DELETE', headers: headers() }).then(loadDestinations); }
+function deleteContact(id) { if (confirm('Supprimer ce message ?')) fetch(API + '/contacts/' + id, { method: 'DELETE', headers: headers() }).then(loadContacts); }
+
+function openDestForm(d) {
+  editingId = d ? d.id : null;
+  const dates = (d ? d.dates || [] : []);
+  const gallery = (d ? d.gallery || [] : []);
+  const recs = (d ? d.recommendations || [] : []);
+  document.getElementById('formContent').innerHTML = `
+    <h2>${editingId ? 'Modifier' : 'Nouvelle'} destination</h2>
+    <div class="form-row">
+      <div class="form-group"><label>Nom (FR)</label><input id="df_name_fr" value="${d ? esc(d.name_fr) : ''}"></div>
+      <div class="form-group"><label>Nom (AR)</label><input id="df_name_ar" value="${d ? esc(d.name_ar) : ''}"></div>
+    </div>
+    <div class="form-group"><label>Nom (EN)</label><input id="df_name_en" value="${d ? esc(d.name_en) : ''}"></div>
+    <div class="form-row">
+      <div class="form-group"><label>Badge (FR)</label><input id="df_tag_fr" value="${d ? esc(d.tag_fr) : ''}"></div>
+      <div class="form-group"><label>Badge (AR)</label><input id="df_tag_ar" value="${d ? esc(d.tag_ar) : ''}"></div>
+    </div>
+    <div class="form-group"><label>Badge (EN)</label><input id="df_tag_en" value="${d ? esc(d.tag_en) : ''}"></div>
+    <div class="form-group"><label>Description (FR)</label><textarea id="df_desc_fr" rows="3">${d ? esc(d.desc_fr) : ''}</textarea></div>
+    <div class="form-group"><label>Description (AR)</label><textarea id="df_desc_ar" rows="2">${d ? esc(d.desc_ar) : ''}</textarea></div>
+    <div class="form-group"><label>Description (EN)</label><textarea id="df_desc_en" rows="2">${d ? esc(d.desc_en) : ''}</textarea></div>
+    <div class="form-row">
+      <div class="form-group"><label>Image principale (URL)</label>
+        <input id="df_image" value="${d ? esc(d.image) : ''}">
+        ${makeUploadHtml('df_img_upload', 'df_image', false, '')}
+      </div>
+      <div class="form-group"><label>Prix</label><input id="df_price" value="${d ? esc(d.price) : ''}"></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Durée</label><input id="df_duration" value="${d ? esc(d.duration) : ''}"></div>
+      <div class="form-group"><label>Requête Google Maps</label><input id="df_mapQuery" value="${d ? esc(d.mapQuery || '') : ''}" placeholder="ex: Sousse+Tunisia"></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Note (rating)</label><input id="df_rating" type="number" step="0.1" value="${d ? d.rating : 4.5}"></div>
+      <div class="form-group"><label>Nombre d'avis</label><input id="df_reviews" type="number" value="${d ? d.reviews : 0}"></div>
+    </div>
+    <div class="form-group"><label>Inclus (FR) <small style="color:#888;font-weight:400"> (un par ligne)</small></label><textarea id="df_inc_fr" rows="3">${d ? (d.includes_fr||[]).join('\n') : ''}</textarea></div>
+    <div class="form-group"><label>Inclus (AR) <small style="color:#888;font-weight:400"> (un par ligne)</small></label><textarea id="df_inc_ar" rows="3">${d ? (d.includes_ar||[]).join('\n') : ''}</textarea></div>
+    <div class="form-group"><label>Inclus (EN) <small style="color:#888;font-weight:400"> (un par ligne)</small></label><textarea id="df_inc_en" rows="3">${d ? (d.includes_en||[]).join('\n') : ''}</textarea></div>
+    <div class="form-group"><label>Dates disponibles <small style="color:#888;font-weight:400"> (ex: 2026-07-01)</small></label>
+      <div style="display:flex;gap:8px"><input id="df_newDate" placeholder="AAAA-MM-JJ" style="flex:1"><button class="btn btn-sm btn-outline" onclick="addDestDate()">Ajouter</button></div>
+      <div class="date-list" id="df_dates">${dates.map(dd => `<span class="date-tag">${dd} <button onclick="rmDestDate('${dd}')">×</button></span>`).join('')}</div>
+    </div>
+    <div class="form-group"><label>Images (galerie) <small style="color:#888;font-weight:400"> (URLs ou upload)</small></label>
+      <div style="display:flex;gap:8px"><input id="df_newGallery" placeholder="URL image" style="flex:1"><button class="btn btn-sm btn-outline" onclick="addDestGallery()">Ajouter URL</button></div>
+      ${makeUploadHtml('df_gallery_upload', '', true, 'df_gallery')}
+      <div class="gallery-list" id="df_gallery">${gallery.map(g => `<div class="gallery-item"><img src="${g}"><button onclick="this.parentElement.remove()">×</button></div>`).join('')}</div>
+    </div>
+    <div class="form-group"><label>Recommandations Google Maps</label>
+      <div id="df_recs">${recs.map((r, i) => recItem(r, i)).join('')}</div>
+      <button class="btn btn-sm btn-outline" style="margin-top:8px" onclick="addDestRec()">+ Ajouter une recommandation</button>
+    </div>
+    <div class="form-actions">
+      <button class="btn btn-outline" onclick="closeForm()">Annuler</button>
+      <button class="btn btn-gold" onclick="saveDest()">${editingId ? 'Enregistrer' : 'Créer'}</button>
+    </div>`;
+  document.getElementById('formOverlay').classList.add('open');
+}
+
+let tempDates = []; let tempGallery = []; let tempRecs = [];
+
+function esc(s) { return (s || '').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/'/g,'&#39;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+function recItem(r, i) {
+  return `<div class="rec-item">
+    <div class="form-row">
+      <div class="form-group"><label>Nom (FR)</label><input class="rec-fr" value="${esc(r.name_fr)}"></div>
+      <div class="form-group"><label>Nom (AR)</label><input class="rec-ar" value="${esc(r.name_ar)}"></div>
+    </div>
+    <div class="form-group"><label>Nom (EN)</label><input class="rec-en" value="${esc(r.name_en)}"></div>
+    <div class="form-row">
+      <div class="form-group"><label>Note</label><input class="rec-rating" type="number" step="0.1" value="${r.rating}"></div>
+      <div class="form-group"><label>Texte (FR)</label><input class="rec-text-fr" value="${esc(r.text_fr)}"></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Texte (AR)</label><input class="rec-text-ar" value="${esc(r.text_ar)}"></div>
+      <div class="form-group"><label>Texte (EN)</label><input class="rec-text-en" value="${esc(r.text_en)}"></div>
+    </div>
+    <button class="btn btn-sm btn-delete" onclick="this.parentElement.remove()">Supprimer</button>
+  </div>`;
+}
+
+let destDateSet = [];
+
+function syncDestForm() {
+  destDateSet = Array.from(document.querySelectorAll('#df_dates .date-tag')).map(el => el.childNodes[0].textContent.trim());
+  tempGallery = Array.from(document.querySelectorAll('#df_gallery img')).map(img => img.src);
+  tempRecs = Array.from(document.querySelectorAll('#df_recs .rec-item')).map(el => ({
+    name_fr: el.querySelector('.rec-fr').value,
+    name_ar: el.querySelector('.rec-ar').value,
+    name_en: el.querySelector('.rec-en').value,
+    rating: parseFloat(el.querySelector('.rec-rating').value) || 0,
+    text_fr: el.querySelector('.rec-text-fr').value,
+    text_ar: el.querySelector('.rec-text-ar').value,
+    text_en: el.querySelector('.rec-text-en').value,
+  }));
+}
+
+function addDestDate() { const v = document.getElementById('df_newDate').value.trim(); if (v) { const span = document.createElement('span'); span.className = 'date-tag'; span.innerHTML = v + ' <button onclick="this.parentElement.remove()">×</button>'; document.getElementById('df_dates').appendChild(span); document.getElementById('df_newDate').value = ''; } }
+function rmDestDate(d) { document.querySelectorAll('#df_dates .date-tag').forEach(el => { if (el.childNodes[0].textContent.trim() === d) el.remove(); }); }
+function addDestGallery() { const v = document.getElementById('df_newGallery').value.trim(); if (v) { const div = document.createElement('div'); div.className = 'gallery-item'; div.innerHTML = `<img src="${v}"><button onclick="this.parentElement.remove()">×</button>`; document.getElementById('df_gallery').appendChild(div); document.getElementById('df_newGallery').value = ''; } }
+function rmDestGallery(g) { document.querySelectorAll('#df_gallery .gallery-item').forEach(el => { if (el.querySelector('img').src === g) el.remove(); }); }
+function addDestRec() { const div = document.createElement('div'); div.innerHTML = recItem({ name_fr: '', name_ar: '', name_en: '', rating: 4.5, text_fr: '', text_ar: '', text_en: '' }, Date.now()); document.getElementById('df_recs').appendChild(div.firstElementChild); }
+
+function saveDest() {
+  syncDestForm();
+  const body = {
+    name_fr: document.getElementById('df_name_fr').value,
+    name_ar: document.getElementById('df_name_ar').value,
+    name_en: document.getElementById('df_name_en').value,
+    tag_fr: document.getElementById('df_tag_fr').value,
+    tag_ar: document.getElementById('df_tag_ar').value,
+    tag_en: document.getElementById('df_tag_en').value,
+    desc_fr: document.getElementById('df_desc_fr').value,
+    desc_ar: document.getElementById('df_desc_ar').value,
+    desc_en: document.getElementById('df_desc_en').value,
+    image: document.getElementById('df_image').value,
+    price: document.getElementById('df_price').value,
+    duration: document.getElementById('df_duration').value,
+    mapQuery: document.getElementById('df_mapQuery').value,
+    rating: parseFloat(document.getElementById('df_rating').value) || 0,
+    reviews: parseInt(document.getElementById('df_reviews').value) || 0,
+    dates: destDateSet,
+    gallery: tempGallery,
+    includes_fr: document.getElementById('df_inc_fr').value.split('\n').filter(Boolean),
+    includes_ar: document.getElementById('df_inc_ar').value.split('\n').filter(Boolean),
+    includes_en: document.getElementById('df_inc_en').value.split('\n').filter(Boolean),
+    recommendations: tempRecs,
+  };
+  const url = editingId ? API + '/destinations/' + editingId : API + '/destinations';
+  const method = editingId ? 'PUT' : 'POST';
+  fetch(url, { method, headers: headers(), body: JSON.stringify(body) }).then(() => { closeForm(); loadDestinations(); });
+}
+
+function editDest(id) {
+  fetch(API + '/destinations').then(r => r.json()).then(data => {
+    const d = data.find(x => x.id === id);
+    if (d) openDestForm(d);
+  });
+}
+
+function closeForm() { document.getElementById('formOverlay').classList.remove('open'); }
+document.getElementById('formOverlay').addEventListener('click', (e) => { if (e.target === e.currentTarget) closeForm(); });
+document.getElementById('passwordInput').addEventListener('keydown', (e) => { if (e.key === 'Enter') login(); });
+
+if (token) loadAll();
+
+function loadReviews() {
+  fetch(API + '/reviews').then(r => r.json()).then(data => {
+    const t = document.getElementById('reviewTable');
+    if (!data.length) { t.innerHTML = '<div class="empty"><p style="font-size:2rem">⭐</p><p>Aucun avis pour le moment</p><p style="font-size:0.8rem;color:#aaa">Synchronisez avec Google Maps ou ajoutez-en manuellement</p></div>'; return; }
+    t.innerHTML = `<table><thead><tr><th>Source</th><th>Nom</th><th>Note</th><th>Avis</th><th>Date</th><th style="width:120px">Actions</th></tr></thead><tbody>${data.map(r => `<tr>
+      <td><span class="badge-cont">${r.source === 'google' ? '🟢 Google' : '✏️ Manuel'}</span></td>
+      <td><strong>${esc(r.name || '')}</strong></td>
+      <td style="color:var(--gold);font-weight:700">${r.rating || 5}/5</td>
+      <td style="max-width:250px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(r.text || '')}</td>
+      <td><small>${new Date(r.date).toLocaleDateString('fr-FR')}</small></td>
+      <td class="actions">
+        <button class="btn btn-sm btn-edit" onclick="editReview('${r.id}')">Modifier</button>
+        <button class="btn btn-sm btn-delete" onclick="deleteReview('${r.id}')">Suppr.</button>
+      </td>
+    </tr>`).join('')}</tbody></table>`;
+  });
+}
+
+function loadReviewConfig() {
+  fetch(API + '/reviews/config', { headers: headers() }).then(r => r.json()).then(cfg => {
+    if (cfg.placeId) document.getElementById('rc_placeId').value = cfg.placeId;
+    if (cfg.apiKey) document.getElementById('rc_apiKey').value = cfg.apiKey;
+  }).catch(() => {});
+}
+
+function saveReviewConfig() {
+  const body = {
+    placeId: document.getElementById('rc_placeId').value.trim(),
+    apiKey: document.getElementById('rc_apiKey').value.trim(),
+  };
+  fetch(API + '/reviews/config', { method: 'POST', headers: headers(), body: JSON.stringify(body) })
+    .then(() => { document.getElementById('syncStatus').textContent = '✅ Config enregistrée'; setTimeout(() => document.getElementById('syncStatus').textContent = '', 3000); });
+}
+
+function syncGoogleReviews() {
+  const status = document.getElementById('syncStatus');
+  status.textContent = '⏳ Synchronisation en cours...';
+  fetch(API + '/reviews/sync', { method: 'POST', headers: headers() })
+    .then(r => r.json()).then(d => {
+      if (d.error) { status.textContent = '❌ ' + d.error; return; }
+      status.textContent = `✅ ${d.synced} nouvel(s) avis synchronisé(s) (${d.total} total, note: ${d.rating}/5)`;
+      loadReviews();
+      setTimeout(() => status.textContent = '', 5000);
+    }).catch(() => { status.textContent = '❌ Erreur de connexion'; });
+}
+
+function openReviewForm(d) {
+  editingId = d ? d.id : null;
+  document.getElementById('formContent').innerHTML = `
+    <h2>${editingId ? 'Modifier' : 'Nouvel'} avis</h2>
+    <div class="form-row">
+      <div class="form-group"><label>Nom du client</label><input id="rv_name" value="${d ? esc(d.name) : ''}" placeholder="Jean Dupont"></div>
+      <div class="form-group"><label>Note (1-5)</label><input id="rv_rating" type="number" min="1" max="5" step="0.5" value="${d ? d.rating : 5}"></div>
+    </div>
+    <div class="form-group"><label>Texte de l'avis</label><textarea id="rv_text" rows="4">${d ? esc(d.text) : ''}</textarea></div>
+    <div class="form-actions">
+      <button class="btn btn-outline" onclick="closeForm()">Annuler</button>
+      <button class="btn btn-gold" onclick="saveReview()">${editingId ? 'Enregistrer' : 'Créer'}</button>
+    </div>`;
+  document.getElementById('formOverlay').classList.add('open');
+}
+
+function saveReview() {
+  const body = {
+    name: document.getElementById('rv_name').value,
+    rating: parseFloat(document.getElementById('rv_rating').value) || 5,
+    text: document.getElementById('rv_text').value,
+  };
+  const url = editingId ? API + '/reviews/' + editingId : API + '/reviews';
+  const method = editingId ? 'PUT' : 'POST';
+  fetch(url, { method, headers: headers(), body: JSON.stringify(body) }).then(() => { closeForm(); loadReviews(); });
+}
+
+function editReview(id) {
+  fetch(API + '/reviews').then(r => r.json()).then(data => {
+    const r = data.find(x => x.id === id);
+    if (r) openReviewForm(r);
+  });
+}
+
+function deleteReview(id) { if (confirm('Supprimer cet avis ?')) fetch(API + '/reviews/' + id, { method: 'DELETE', headers: headers() }).then(loadReviews); }
+
+function loadOrganized() {
+  fetch(API + '/organized-destinations').then(r => r.json()).then(data => {
+    const t = document.getElementById('orgTable');
+    if (!data.length) { t.innerHTML = '<div class="empty"><p style="font-size:2rem">🧳</p><p>Aucune destination organisée</p><p style="font-size:0.8rem;color:#aaa">Ajoutez des destinations qui apparaîtront sur la page Blog</p></div>'; return; }
+    t.innerHTML = `<table><thead><tr><th>Images</th><th>Nom (FR)</th><th>Prix</th><th>Durée</th><th>Dates</th><th style="width:120px">Actions</th></tr></thead><tbody>${data.map(d => `<tr>
+      <td style="display:flex;gap:4px">${(d.images||[]).slice(0,3).map(img => '<img src="' + esc(img) + '" style="width:40px;height:30px;object-fit:cover;border-radius:4px">').join('')}<span style="font-size:0.7rem;color:#888;display:flex;align-items:center">+${(d.images||[]).length > 3 ? (d.images||[]).length - 3 : ''}</span></td>
+      <td><strong>${esc(d.name_fr || '')}</strong></td>
+      <td>${esc(d.price || '')}</td>
+      <td><small>${esc(d.duration || '')}</small></td>
+      <td><small>${(d.dates||[]).join(', ') || '—'}</small></td>
+      <td class="actions">
+        <button class="btn btn-sm btn-edit" onclick="editOrg('${d.id}')">Modifier</button>
+        <button class="btn btn-sm btn-delete" onclick="deleteOrg('${d.id}')">Suppr.</button>
+      </td>
+    </tr>`).join('')}</tbody></table>`;
+  }).catch(err => {
+    document.getElementById('orgTable').innerHTML = '<div class="empty"><p style="color:#e74c3c">Erreur de connexion au serveur</p></div>';
+  });
+}
+
+function openOrgForm(d) {
+  editingId = d ? d.id : null;
+  const imgs = (d ? d.images || [] : []);
+  document.getElementById('formContent').innerHTML = `
+    <h2>${editingId ? 'Modifier' : 'Nouvelle'} destination organisée</h2>
+    <p style="color:#888;font-size:0.85rem;margin-bottom:20px">Ces destinations apparaissent sur la page Blog du site.</p>
+    <div class="form-row">
+      <div class="form-group"><label>Nom (FR)</label><input id="og_name_fr" value="${d ? esc(d.name_fr) : ''}"></div>
+      <div class="form-group"><label>Nom (AR)</label><input id="og_name_ar" value="${d ? esc(d.name_ar) : ''}"></div>
+    </div>
+    <div class="form-group"><label>Nom (EN)</label><input id="og_name_en" value="${d ? esc(d.name_en) : ''}"></div>
+    <div class="form-group"><label>Description (FR)</label><textarea id="og_desc_fr" rows="3">${d ? esc(d.description_fr) : ''}</textarea></div>
+    <div class="form-group"><label>Description (AR)</label><textarea id="og_desc_ar" rows="2">${d ? esc(d.description_ar) : ''}</textarea></div>
+    <div class="form-group"><label>Description (EN)</label><textarea id="og_desc_en" rows="2">${d ? esc(d.description_en) : ''}</textarea></div>
+    <div class="form-group"><label>Prix</label><input id="og_price" value="${d ? esc(d.price) : ''}" placeholder="ex: 31 990 DA"></div>
+    <div class="form-group"><label>Durée</label><input id="og_duration" value="${d ? esc(d.duration) : ''}" placeholder="ex: 7 Jours / 6 Nuits"></div>
+    <div class="form-group"><label>Dates du séjour <small style="color:#888;font-weight:400">(ex: 15 Juillet 2026)</small></label>
+      <div style="display:flex;gap:8px"><input id="og_newDate" placeholder="Date" style="flex:1"><button class="btn btn-sm btn-outline" onclick="addOrgDate()">Ajouter</button></div>
+      <div class="date-list" id="og_dates">${(d ? d.dates || [] : []).map(dd => `<span class="date-tag">${dd} <button onclick="this.parentElement.remove()">×</button></span>`).join('')}</div>
+    </div>
+    <div class="form-group"><label>Images (URLs ou upload)</label>
+      <div style="display:flex;gap:8px;margin-bottom:8px"><input id="og_newImg" placeholder="URL image" style="flex:1"><button class="btn btn-sm btn-outline" onclick="addOrgImg()">Ajouter URL</button></div>
+      ${makeUploadHtml('og_img_upload', '', true, 'og_gallery')}
+      <div class="gallery-list" id="og_gallery">${imgs.map(img => `<div class="gallery-item"><img src="${img}"><button onclick="this.parentElement.remove()">×</button></div>`).join('')}</div>
+    </div>
+    <div class="form-group"><label>Inclus (FR) <small style="color:#888;font-weight:400">(un par ligne)</small></label>
+      <textarea id="og_includes" rows="3">${d ? (d.includes||[]).join('\n') : ''}</textarea>
+    </div>
+    <div class="form-actions">
+      <button class="btn btn-outline" onclick="closeForm()">Annuler</button>
+      <button class="btn btn-gold" onclick="saveOrg()">${editingId ? 'Enregistrer' : 'Créer'}</button>
+    </div>`;
+  document.getElementById('formOverlay').classList.add('open');
+}
+
+function addOrgImg() {
+  const v = document.getElementById('og_newImg').value.trim();
+  if (v) {
+    const div = document.createElement('div');
+    div.className = 'gallery-item';
+    div.innerHTML = `<img src="${v}"><button onclick="this.parentElement.remove()">×</button>`;
+    document.getElementById('og_gallery').appendChild(div);
+    document.getElementById('og_newImg').value = '';
+  }
+}
+
+function addOrgDate() {
+  const v = document.getElementById('og_newDate').value.trim();
+  if (v) {
+    const span = document.createElement('span');
+    span.className = 'date-tag';
+    span.innerHTML = v + ' <button onclick="this.parentElement.remove()">×</button>';
+    document.getElementById('og_dates').appendChild(span);
+    document.getElementById('og_newDate').value = '';
+  }
+}
+
+function saveOrg() {
+  const imgs = Array.from(document.querySelectorAll('#og_gallery img')).map(img => img.src);
+  const dates = Array.from(document.querySelectorAll('#og_dates .date-tag')).map(el => el.childNodes[0].textContent.trim());
+  const body = {
+    name_fr: document.getElementById('og_name_fr').value,
+    name_ar: document.getElementById('og_name_ar').value,
+    name_en: document.getElementById('og_name_en').value,
+    description_fr: document.getElementById('og_desc_fr').value,
+    description_ar: document.getElementById('og_desc_ar').value,
+    description_en: document.getElementById('og_desc_en').value,
+    price: document.getElementById('og_price').value,
+    duration: document.getElementById('og_duration').value,
+    images: imgs,
+    dates: dates,
+    includes: document.getElementById('og_includes').value.split('\n').filter(Boolean),
+  };
+  const url = editingId ? API + '/organized-destinations/' + editingId : API + '/organized-destinations';
+  const method = editingId ? 'PUT' : 'POST';
+  fetch(url, { method, headers: headers(), body: JSON.stringify(body) }).then(() => { closeForm(); loadOrganized(); });
+}
+
+function editOrg(id) {
+  fetch(API + '/organized-destinations').then(r => r.json()).then(data => {
+    const d = data.find(x => x.id === id);
+    if (d) openOrgForm(d);
+  });
+}
+
+function deleteOrg(id) { if (confirm('Supprimer cette destination ?')) fetch(API + '/organized-destinations/' + id, { method: 'DELETE', headers: headers() }).then(loadOrganized); }
+</script>
+</body>
+</html>
